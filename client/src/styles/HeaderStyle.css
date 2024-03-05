@@ -1,0 +1,17 @@
+.navbar {
+  background-color: #717f84aa !important;
+}
+.navbar .navbar-brand {
+  color: rgba(199, 157, 127, 0.6) !important;
+  font-weight: bold;
+  /* font-size: 1.5rem; */
+}
+
+.nav-link {
+  font-size: 1.2rem;
+}
+
+.navbar h6 {
+  margin-top: 0px;
+  margin-right: 20px;
+}

@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&family=Ubuntu:wght@300&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.content {
+}
+
+/* transaction page */
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  box-shadow: 0 0 3px gray;
+  margin-bottom: 10px;
+}
+/* antd icons */
+.switch-icons {
+  border: 1px solid rgba(0, 0, 0, 0.677);
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+.anticon svg {
+  font-size: 20px;
+  cursor: pointer;
+}
+.active-icon {
+  color: black;
+}
+.inactive-icon {
+  color: gray;
+}
+.filter-tab .ant-select-selector {
+  width: 150px !important;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content {
+  /* Add your styles for the main content here */
+  height: 100%;
+  padding: 20px; /* Add padding or other styles as needed */
+  /* This padding is just for demonstration purposes */
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #343a40; /* Example background color */
+  color: #ffffff; /* Example text color */
+  padding: 20px; /* Add padding or other styles as needed */
+  text-align: center;
+  border: 2px solid rgb(237, 177, 99);
+}
+
+.custom-text-black {
+  color: black;
+}
+
+/* .navbar{
+    background-color: antiquewhite !important;
+  } */
+
+/* font-family: 'Playfair Display', serif;
+font-family: 'Poppins', sans-serif;
+font-family: 'Ubuntu', sans-serif; */
