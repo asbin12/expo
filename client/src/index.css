@@ -1,13 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400&family=Ubuntu:wght@300&display=swap");
 
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 .content {
 }
-
+.top-modal {
+  position: fixed;
+  top: 0; /* Align the top of the modal to the top of the screen */
+  left: 50%; /* Align the left edge of the modal to the center horizontally */
+  transform: translateX(-50%); /* Center the modal horizontally */
+  overflow-y: scroll;
+}
 /* transaction page */
 .filters {
   display: flex;

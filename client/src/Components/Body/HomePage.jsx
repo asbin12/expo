@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../Layout/Layout";
-import { Form, Input, Modal, Select, Table, message, DatePicker } from "antd";
+import {
+  Form,
+  Input,
+  Modal,
+  Select,
+  Table,
+  message,
+  DatePicker,
+  Button,
+} from "antd";
 import {
   UnorderedListOutlined,
   AreaChartOutlined,
@@ -28,7 +37,6 @@ const HomePage = () => {
   const [viewData, setViewData] = useState("table");
   const [currentPage, setCurrentPage] = useState(1);
 
-  console.log("allTransaction", allTransaction);
   // Table Data
   const columns = [
     {
@@ -131,32 +139,65 @@ const HomePage = () => {
   //   setEditable(record);
   //   setShowModal(true);
   // };
+  const getAllTransaction = async (params) => {
+    try {
+      const res = await axios.get(`${URL}/transaction/get-transaction`, {
+        params,
+      });
+      setAllTransaction(res.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      message.error("Fetch Issue With Transaction");
+    }
+  };
 
   useEffect(() => {
-    const getAllTransaction = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem("user"));
-        setLoading(true);
+    setLoading(true);
 
-        const res = await axios.get(`${URL}/transaction/get-transaction`, {
-          params: {
-            userid: user._id,
-            frequency,
-            selectedDate,
-            type,
-          },
-        });
-        setAllTransaction(res.data);
-        console.log("Data from backend:", res.data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        message.error("Fetch Issue With Transaction");
-      }
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    let params = {
+      userid: user ? user._id : "",
+      frequency,
+      type,
     };
-    getAllTransaction();
-  }, [frequency, selectedDate, type]);
 
+    if (frequency === "custom") {
+      const startDate = moment().subtract(1, "days").format("YYYY-MM-DD"); // Yesterday
+      const endDate = moment().format("YYYY-MM-DD"); // Today
+      params = {
+        ...params,
+        startDate,
+        endDate,
+      };
+    }
+
+    getAllTransaction(params);
+  }, [frequency, type, selectedDate]);
+
+  const handleButtonClick = () => {
+    const user = JSON.parse(localStorage.getItem("user")); // Declare user within handleButtonClick
+
+    let params = {
+      userid: user ? user._id : "", // Check if user exists before accessing _id
+      frequency,
+      type,
+    };
+
+    if (frequency === "custom" && selectedDate.length === 2) {
+      // Format the selected dates
+      const startDate = selectedDate[0].format("YYYY-MM-DD");
+      const endDate = selectedDate[1].format("YYYY-MM-DD");
+      params = {
+        ...params,
+        startDate,
+        endDate,
+      };
+    }
+
+    getAllTransaction(params);
+  };
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -232,7 +273,7 @@ const HomePage = () => {
       <div className="filters">
         <div>
           <h6>Select Frequency</h6>
-          <Select value={frequency} onChange={(values) => setFrequency(values)}>
+          <Select value={frequency} onChange={(value) => setFrequency(value)}>
             <Select.Option value="7">Last 1 Week</Select.Option>
             <Select.Option value="30">Last 1 Month</Select.Option>
             <Select.Option value="365">Last 1 Year</Select.Option>
@@ -241,10 +282,14 @@ const HomePage = () => {
           {frequency === "custom" && (
             <RangePicker
               value={selectedDate}
-              onChange={(values) => setSelectedDate(values)}
+              onChange={(dates) => setSelectedDate(dates)}
             />
           )}
+          {frequency === "custom" ? (
+            <Button onClick={handleButtonClick}>Apply</Button>
+          ) : null}
         </div>
+
         <div>
           <h6>Select Type</h6>
           <Select
@@ -312,8 +357,11 @@ const HomePage = () => {
           setShowModal(false);
           setEditable(null);
         }}
+        destroyOnClose={true}
         footer={false}
+        className="top-modal"
       >
+        {" "}
         <Form
           layout="vertical"
           onFinish={handleSubmit}
